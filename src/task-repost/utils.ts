@@ -1,0 +1,1 @@
+export const Steps = ['Choose Day ', 'Create', 'Review', 'Completed']

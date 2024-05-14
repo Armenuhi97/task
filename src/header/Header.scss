@@ -1,0 +1,66 @@
+.header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 10px 10px 0px #0000000D;
+    justify-content: space-between;
+
+    .logo {
+        width: 83px;
+        height: 30px;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+
+        a {
+            color: #000000;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 22px;
+            text-decoration: none;
+            padding: 8px 17px;
+        }
+
+        .active {
+            border-bottom: 4px solid #3DA2C2;
+        }
+    }
+
+    .settings {
+        display: flex;
+        align-items: center;
+
+        .message {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .bell,
+        .language {
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            margin-left: 38px;
+
+            .name {
+                margin: 0 10px;
+                color: #000000;
+                font-size: 14px;
+                line-height: 22px;
+                font-weight: 400;
+            }
+
+            .arrow-down {
+                cursor: pointer;
+            }
+        }
+
+    }
+}
