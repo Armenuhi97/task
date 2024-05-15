@@ -1,44 +1,59 @@
-import Stepper from "../stepper/Stepper";
+import Stepper from "../components/stepper/Stepper";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Steps } from "./utils";
 import './TaskReport.scss';
 import { FullCalendar } from "../select-day/FullCalendar";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { TaskForm } from "./task-form.model";
-import ButtonsGroup from "../buttons-group/ButtonsGroup";
+import ButtonsGroup from "../components/buttons-group/ButtonsGroup";
+import TaskControl from "../task-control/TaskControl";
+import TaskFormContent from "../components/task-form-content/TaskFormContent";
 
 export default function TaskReport() {
     const [step, setStep] = useState(0);
-    const [savedTask, setSavedTask] = useState<TaskForm>({
-        day: null
-    });
+    // const [savedTask, setSavedTask] = useState<TaskForm>({
+    //     day: null
+    // });
+    const taskDefaultValue = () => {
+        const date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth() + 1; //Month from 0 to 11
+        var y = date.getFullYear();
+
+        return {
+            date: `${y}-${m <= 9 ? '0' + m : m}-${(d <= 9 ? '0' + d : d)}`,
+            title: '',
+            description: '',
+            status: '',
+            files: []
+        }
+    }
     const { control, handleSubmit, getValues, setValue, watch, formState: { errors }, register } = useForm<TaskForm>({
-        defaultValues: useMemo(() => {
-            const data = {
-                ...savedTask,
-                day: savedTask.day ? new Date(savedTask.day!) : null
-            };
-            return data;
-        }, [savedTask])
-        //  {
-        //     day: '2024-05-03T20:00:00.0',
-        // }
+        defaultValues: {
+            day: null,
+            tasks: [taskDefaultValue()]
+        }
     });
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'tasks'
+    });
+
+
     useEffect(() => {
         try {
-            const storageTask = JSON.parse(localStorage.getItem('task')!);
-            if (storageTask) {
-                setSavedTask(storageTask.form);
-                setStep(storageTask.step);
-                // const data = {
-                //     ...savedTask,
-                //     day: 
-                // };    
-                console.log(storageTask.form);
-                            
-                setValue('day',savedTask.day ? new Date(storageTask.form.day!) : null)
-                // setValue('day', new Date('2024-05-03T20:00:00.0'));
+            const task = localStorage.getItem('task');
+            if (task) {
+                const storageTask = JSON.parse(task);
+                setValue('day', storageTask.day ? new Date(storageTask.day) : null);
+                if (storageTask.tasks) {
+                    setValue('tasks', storageTask.tasks);
+                }
 
+            }
+            const savedStep = localStorage.getItem('step');
+            if (savedStep) {
+                setStep(+savedStep);
             }
         }
         catch { }
@@ -52,11 +67,12 @@ export default function TaskReport() {
     }, [watch, step]);
 
     const saveTask = useCallback((formValue: TaskForm) => {
-        localStorage.setItem('task', JSON.stringify({
-            step,
-            form: formValue
-        }))
-    }, [step]);
+        localStorage.setItem('task', JSON.stringify(formValue));
+    }, []);
+
+    const saveStep = useCallback((currentStep: number) => {
+        localStorage.setItem('step', JSON.stringify(currentStep));
+    }, []);
 
     const onSubmit = (data: TaskForm) => {
         console.log(data);
@@ -67,7 +83,7 @@ export default function TaskReport() {
             return;
         }
         setStep(step - 1);
-        // saveTask
+        saveStep(step - 1);
     }, [step]);
 
     const handleNext = useCallback(() => {
@@ -77,7 +93,29 @@ export default function TaskReport() {
             return;
         }
         setStep(step + 1);
-        // saveTask
+        saveStep(step + 1);
+    }, [step]);
+
+    const handleAdd = () => {
+        append(taskDefaultValue());
+    }
+    const removeControl = (index: number) => {
+        remove(index);
+    }
+    const stepComponent = useCallback(() => {
+        switch (step) {
+
+            case 0: return <FullCalendar control={control} />;
+            case 1: return (
+                fields.map((field, index) => {
+                    return (
+                        <TaskFormContent removeControl={() => removeControl(index)} key={field.id}>
+                            <TaskControl {...{ control, index, field }} />
+                        </TaskFormContent>
+                    )
+                })
+            );
+        }
     }, [step]);
 
     return (
@@ -86,8 +124,10 @@ export default function TaskReport() {
             <h1 className="title">Task Report</h1>
             <p className="sub-title">Duis tellus aenean id tellus eu ut sit magna magna. At ornare iaculis feugiat nullam morbi ut interdum. Nunc dui elit nibh urna ullamcorper tincidunt.</p>
             <form onSubmit={handleSubmit(onSubmit)}>
-                {step === 0 && <FullCalendar control={control} />}
-                <ButtonsGroup step={step} handleBack={handleBack} handleNext={handleNext}></ButtonsGroup>
+                <div className="step-component">{stepComponent()}</div>
+                <div className="buttons">
+                    <ButtonsGroup isShowAddBtn={step === 1} step={step} handleAdd={handleAdd} handleBack={handleBack} handleNext={handleNext}></ButtonsGroup>
+                </div>
             </form>
         </div>
 

@@ -1,0 +1,59 @@
+.task-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-content {
+    padding-right: 25px;
+    border-right: 1px solid #C4C4C4;
+}
+
+.right-content {
+    padding-left: 25px;
+}
+
+.left-content,
+.right-content {
+    width: calc(50% - 5px);
+}
+
+input[type="text"],
+input[type="checkbox"],
+input[type="date"],
+textarea {
+    border: 2px solid #DADADA;
+    border-radius: 10px;
+    margin-top: 24px;
+    outline: none;
+    &:focus{
+        border-color: #3DA2C2 !important;
+        transition: .2s;
+    }
+}
+
+input[type="text"],
+input[type="date"],
+textarea {
+    padding: 15px 22px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+textarea {
+    resize: none;
+}
+
+.switch-content {
+    margin-top: 24px;
+}
+
+.status {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 17px;
+    margin-bottom: 10px;
+}
