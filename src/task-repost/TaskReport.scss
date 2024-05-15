@@ -1,15 +1,47 @@
-.title{
+.title {
     margin-top: 70px;
-    color: #295B82;
+    color: #295b82;
     font-size: 52px;
     line-height: 46px;
     text-align: center;
     font-family: Roboto;
 }
-.sub-title{
-    color: #000000D9;
+.sub-title {
+    color: #000000d9;
     font-size: 14px;
     line-height: 22px;
     text-align: center;
-    font-family: Roboto;  
+    font-family: Roboto;
+    margin-top: 39px;
+}
+.buttons-group,
+.right-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.ml-20 {
+    margin-left: 20px;
+}
+.btn {
+    padding: 8px 56px 8px 56px;
+    border-radius: 2px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: center;
+    box-shadow: 0px 2px 0px 0px #0000000B;
+    &:hover{
+        opacity: 0.8;
+    }
+}
+.back-btn {
+    background-color: #ffffff;
+    border: 1px solid #bfbfbf;
+    color: #8c8c8c;
+}
+.next-btn {
+    background-color: #3DA2C2;
+    color: #ffffff;
 }

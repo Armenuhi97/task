@@ -1,3 +1,3 @@
 export type TaskForm = {
-    day: string | null;
+    day?: Date | undefined | null | string;
 }

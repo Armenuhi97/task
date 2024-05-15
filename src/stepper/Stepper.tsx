@@ -1,9 +1,14 @@
 import './Stepper.scss';
-export default function Stepper({ currentStep, steps }: { currentStep: number, steps: string[] }) {
+
+interface IStepProps {
+    currentStep: number;
+    steps: string[];
+}
+export default function Stepper({ currentStep, steps }: IStepProps) {
     return (
         <div className='stepper'>
             {
-                steps.map((step:string, index:number) => {                   
+                steps.map((step: string, index: number) => {
                     return (
                         <div className={`step ${currentStep >= index ? 'active-step' : ''}`} key={index}>
                             <div className="step-number">
