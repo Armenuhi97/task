@@ -1,8 +1,5 @@
-import { ControllerRenderProps } from "react-hook-form";
-import { TaskForm } from "../../task-repost/task-form.model";
 import './Switch.scss';
 type Prop = {
-    // field: ControllerRenderProps<TaskForm, `tasks.${number}.status`>;
     label: string;
     value:string | undefined;
     onChange:()=>void

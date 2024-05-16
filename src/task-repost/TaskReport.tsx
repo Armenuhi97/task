@@ -11,10 +11,8 @@ import TaskFormContent from "../components/task-form-content/TaskFormContent";
 
 export default function TaskReport() {
     const [step, setStep] = useState(0);
-    // const [savedTask, setSavedTask] = useState<TaskForm>({
-    //     day: null
-    // });
-    const taskDefaultValue = () => {
+
+    const taskDefaultValue = useCallback(() => {
         const date = new Date();
         var d = date.getDate();
         var m = date.getMonth() + 1; //Month from 0 to 11
@@ -27,7 +25,7 @@ export default function TaskReport() {
             status: '',
             files: []
         }
-    }
+    }, [])
     const { control, handleSubmit, getValues, setValue, watch, formState: { errors }, register } = useForm<TaskForm>({
         defaultValues: {
             day: null,
@@ -60,7 +58,7 @@ export default function TaskReport() {
     }, []);
 
     useEffect(() => {
-        const subscription = watch((formValue) => {
+        const subscription = watch((formValue: any) => {
             saveTask(formValue);
         })
         return () => subscription.unsubscribe();
@@ -104,19 +102,20 @@ export default function TaskReport() {
     }
     const stepComponent = useCallback(() => {
         switch (step) {
-
             case 0: return <FullCalendar control={control} />;
             case 1: return (
                 fields.map((field, index) => {
                     return (
-                        <TaskFormContent removeControl={() => removeControl(index)} key={field.id}>
-                            <TaskControl {...{ control, index, field }} />
-                        </TaskFormContent>
+                        <div key={field.id} className="form-control">
+                            <TaskFormContent removeControl={() => removeControl(index)}>
+                                <TaskControl {...{ control, index, field }} />
+                            </TaskFormContent>
+                        </div>
                     )
                 })
             );
         }
-    }, [step]);
+    }, [step, fields]);
 
     return (
         <div>

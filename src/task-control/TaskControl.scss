@@ -6,29 +6,32 @@
 
 .left-content {
     padding-right: 25px;
-    border-right: 1px solid #C4C4C4;
 }
 
 .right-content {
     padding-left: 25px;
+    border-left: 1px solid #c4c4c4;
+
 }
 
 .left-content,
 .right-content {
     width: calc(50% - 5px);
 }
-
+.upload-image{
+    width: 100%;
+}
 input[type="text"],
 input[type="checkbox"],
 input[type="date"],
 textarea {
-    border: 2px solid #DADADA;
+    border: 2px solid #dadada;
     border-radius: 10px;
     margin-top: 24px;
     outline: none;
-    &:focus{
-        border-color: #3DA2C2 !important;
-        transition: .2s;
+    &:focus {
+        border-color: #3da2c2 !important;
+        transition: 0.2s;
     }
 }
 
@@ -57,3 +60,5 @@ textarea {
     line-height: 17px;
     margin-bottom: 10px;
 }
+
+

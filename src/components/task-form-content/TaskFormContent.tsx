@@ -7,7 +7,10 @@ type Props = {
 export default function TaskFormContent({ children, removeControl }: Props) {
     return (
         <div className="task-form-content">
-            <button onClick={() => removeControl} className='delete-btn'>
+            <button onClick={(e) => {
+                e.preventDefault();
+                removeControl()
+            }} className='delete-btn'>
                 <img src="/icons/Minus.svg" alt="" />
             </button>
             {children}

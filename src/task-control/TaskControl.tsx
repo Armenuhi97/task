@@ -1,14 +1,16 @@
-import { Control, Controller, FieldArrayWithId } from 'react-hook-form';
+import { ChangeHandler, Control, Controller, FieldArrayWithId } from 'react-hook-form';
 import FloatingLabelFields from '../components/floating-label-field/FloatingLabelField';
 import './TaskControl.scss';
-import { TaskForm } from '../task-repost/task-form.model';
+import { IFile, TaskForm } from '../task-repost/task-form.model';
 import { Switch } from '../components/switch/Switch';
+import DargAndDropFiles from '../components/drag-and-drop-files/DargAndDropFiles';
+import DragNdrop from '../components/drag-and-drop-files/DargAndDropFiles';
+import { useState } from 'react';
 type Props = {
-    field: FieldArrayWithId;
     index: number;
     control: Control<TaskForm>
 }
-export default function TaskControl({ control, index, field }: Props) {
+export default function TaskControl({ control, index }: Props) {
     return (
         <div className="task-content">
             <div className='left-content'>
@@ -59,7 +61,7 @@ export default function TaskControl({ control, index, field }: Props) {
                     rules={{
                         required: true,
                     }}
-                    render={({ field: { onChange, value } })=>{                        
+                    render={({ field: { onChange, value } }) => {
                         return (
                             <div className='switch-content'>
                                 <div className='status'>Status</div>
@@ -68,11 +70,21 @@ export default function TaskControl({ control, index, field }: Props) {
                         )
                     }}
                 />
-
             </div>
             <div className='right-content'>
-                <input type="file" />
-                <img src="/images/upload-photo.png" alt="" />
+                <Controller
+                    control={control}
+                    name={`tasks.${index}.files`}
+                    rules={{
+                        required: true,
+                    }}
+                    render={({ field: { onChange, value } }) => {
+                        return <DragNdrop onChange={(e:IFile[]) => onChange(e)} files={value} />
+                    }
+                    }
+                />
+                {/* <DargAndDropFiles /> */}
+                <img className='upload-image' src="/images/upload-photo.png" alt="" />
             </div>
 
         </div>

@@ -5,11 +5,15 @@ export type TaskForm = {
 
 type ITask = {
     date?: string | number | readonly (string | undefined)[] | undefined; title?: string | undefined;
-    description?: string | undefined; status?: string | undefined; files?: (string | undefined)[] | undefined;
+    description?: string | undefined; status?: string | undefined; files?: IFile[] | undefined;
     // date?: string | number | readonly string[] | undefined;
     // title?: string | undefined;
     // description?: string | undefined;
     // status?:  undefined  | string | number | readonly string[];
     // files?: (string | undefined)[] | undefined;
 
-} 
+}
+export interface IFile {
+    name: string;
+    image: string | undefined;
+}
