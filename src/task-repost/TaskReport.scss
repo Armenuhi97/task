@@ -39,15 +39,12 @@
         opacity: 0.8;
     }
 }
-.back-btn {
-    background-color: #ffffff;
-    border: 1px solid #bfbfbf;
-    color: #8c8c8c;
+.finish-btn{
+    display: flex;
+    margin: 0 auto;
 }
-.next-btn {
-    background-color: #3DA2C2;
-    color: #ffffff;
-}
+
+
 .form-control{
     margin-top: 20px;
 }

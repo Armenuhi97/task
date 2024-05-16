@@ -31,13 +31,12 @@ export default function PreviewTask({ formValue }: { formValue: TaskForm }) {
                                     <p>{task?.description}</p>
                                 </div>
                                 {
-                                    task?.files?.map((file) => {
-                                        return <div className="task-file">
+                                    task?.files?.map((file,index) => {
+                                        return <div key={index} className="task-file">
                                             <img src={file.image} alt="" />
                                             <p>{file.name}</p>
                                         </div>
                                     })
-
                                 }
                             </div>
                         </TaskFormContent>

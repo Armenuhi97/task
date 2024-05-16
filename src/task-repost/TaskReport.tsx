@@ -9,9 +9,14 @@ import ButtonsGroup from "../components/buttons-group/ButtonsGroup";
 import TaskControl from "../task-control/TaskControl";
 import TaskFormContent from "../components/task-form-content/TaskFormContent";
 import PreviewTask from "../preview-task/PreviewTask";
+import CompletedTask from "../completed-task/CompletedTask";
+import PrimaryButton from "../components/primary-button/PrimaryButton";
+import { Confirm } from "../confirm/Confirm";
+import SecondaryButton from "../components/secondary-button/SecondaryButton";
 
 export default function TaskReport() {
-    const [step, setStep] = useState(0);
+    const [step, setStep] = useState<number>(0);
+    // const [isFinish, setIsFinish] = useState<boolean>(false);
 
     const taskDefaultValue = useCallback(() => {
         const date = new Date();
@@ -27,7 +32,7 @@ export default function TaskReport() {
             files: []
         }
     }, [])
-    const { control, handleSubmit, getValues, setValue, watch, formState: { errors }, register } = useForm<TaskForm>({
+    const { control, reset, handleSubmit, getValues, setValue, watch, formState: { errors }, register } = useForm<TaskForm>({
         defaultValues: {
             day: null,
             tasks: [taskDefaultValue()]
@@ -86,9 +91,12 @@ export default function TaskReport() {
     }, [step]);
 
     const handleNext = useCallback(() => {
-        if (step === Steps.length - 1) {
-            const formValue = getValues();
-            onSubmit(formValue);
+        console.log(step);
+        console.log(Steps.length);
+
+        if (step === Steps.length) {
+            // const formValue = getValues();
+            // onSubmit(formValue);
             return;
         }
         setStep(step + 1);
@@ -116,8 +124,18 @@ export default function TaskReport() {
                 })
             );
             case 2: return <PreviewTask formValue={getValues()} />
+            case 3: return <CompletedTask />
+            case 4: return <Confirm handleConfirm={handleConfirm} handleReject={handleConfirm} />
+
         }
     }, [step, fields]);
+
+    const handleConfirm = () => {
+        localStorage.removeItem('step');
+        localStorage.removeItem('task');
+        reset();
+        setStep(0);
+    }
 
     return (
         <div>
@@ -127,7 +145,9 @@ export default function TaskReport() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="step-component">{stepComponent()}</div>
                 <div className="buttons">
-                    <ButtonsGroup isShowAddBtn={step === 1} step={step} handleAdd={handleAdd} handleBack={handleBack} handleNext={handleNext}></ButtonsGroup>
+                    {step === 3 && <PrimaryButton className="finish-btn" title='Finish' handleClick={() => handleNext()} />}
+                    {step <= 2 && <ButtonsGroup isShowAddBtn={step === 1} step={step} handleAdd={handleAdd} handleBack={handleBack} handleNext={handleNext}></ButtonsGroup>}
+
                 </div>
             </form>
         </div>

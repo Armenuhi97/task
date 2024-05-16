@@ -9,7 +9,7 @@ export function Switch({ value, label, onChange }: Prop) {
         <label className="switch">
             <input type="checkbox"  checked={!!value} onChange={onChange} />
             <span className="slider round"></span>
-            <div className="text">{label}</div>
+            <div className="switch-text">{label}</div>
         </label>
     )
 }
