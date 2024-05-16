@@ -8,6 +8,7 @@ import { TaskForm } from "./task-form.model";
 import ButtonsGroup from "../components/buttons-group/ButtonsGroup";
 import TaskControl from "../task-control/TaskControl";
 import TaskFormContent from "../components/task-form-content/TaskFormContent";
+import PreviewTask from "../preview-task/PreviewTask";
 
 export default function TaskReport() {
     const [step, setStep] = useState(0);
@@ -107,13 +108,14 @@ export default function TaskReport() {
                 fields.map((field, index) => {
                     return (
                         <div key={field.id} className="form-control">
-                            <TaskFormContent removeControl={() => removeControl(index)}>
+                            <TaskFormContent isShowRemoveButton={true} removeControl={() => removeControl(index)}>
                                 <TaskControl {...{ control, index, field }} />
                             </TaskFormContent>
                         </div>
                     )
                 })
             );
+            case 2: return <PreviewTask formValue={getValues()} />
         }
     }, [step, fields]);
 

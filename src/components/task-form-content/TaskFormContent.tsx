@@ -2,17 +2,18 @@ import './TaskFormContent.scss';
 
 type Props = {
     children: string | JSX.Element | JSX.Element[];
-    removeControl: () => void;
+    removeControl?: () => void;
+    isShowRemoveButton: boolean
 }
-export default function TaskFormContent({ children, removeControl }: Props) {
+export default function TaskFormContent({ children, removeControl, isShowRemoveButton = true }: Props) {
     return (
         <div className="task-form-content">
-            <button onClick={(e) => {
+            {isShowRemoveButton && <button onClick={(e) => {
                 e.preventDefault();
-                removeControl()
+                removeControl!();
             }} className='delete-btn'>
                 <img src="/icons/Minus.svg" alt="" />
-            </button>
+            </button>}
             {children}
         </div>
 
