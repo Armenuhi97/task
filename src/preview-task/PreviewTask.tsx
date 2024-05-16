@@ -3,18 +3,11 @@ import { TaskForm } from "../task-repost/task-form.model";
 import './PreviewTask.scss';
 
 export default function PreviewTask({ formValue }: { formValue: TaskForm }) {
-    console.log(formValue.tasks);
-    const transformDate = (date: Date): string => {
-        var d = date.getDate();
-        var m = date.getMonth() + 1; //Month from 0 to 11
-        var y = date.getFullYear();
-        return `${y}-${m <= 9 ? '0' + m : m}-${(d <= 9 ? '0' + d : d)}`;
-    }
     return (
         <div>
             {formValue.tasks?.map((task, index) => {
                 return (
-                    <div className="preview-task">
+                    <div key={index} className="preview-task">
                         <TaskFormContent key={index} isShowRemoveButton={false} >
                             <div className="preview-task-content">
                                 <h1 className="preview-task-title">{task?.title}</h1>
@@ -31,7 +24,7 @@ export default function PreviewTask({ formValue }: { formValue: TaskForm }) {
                                     <p>{task?.description}</p>
                                 </div>
                                 {
-                                    task?.files?.map((file,index) => {
+                                    task?.files?.map((file, index) => {
                                         return <div key={index} className="task-file">
                                             <img src={file.image} alt="" />
                                             <p>{file.name}</p>

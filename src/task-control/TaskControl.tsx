@@ -8,11 +8,10 @@ import DragNdrop from '../components/drag-and-drop-files/DargAndDropFiles';
 type Props = {
     index: number;
     control: Control<TaskForm>;
-    errors?: FieldErrors<TaskForm>
+    errors?: FieldErrors;
 }
-export default function TaskControl({ control, index, errors}: Props) {
-    console.log(errors);
-    
+export default function TaskControl({ control, index, errors }: Props) {
+
     return (
         <div className="task-content">
             <div className='left-content'>
@@ -22,9 +21,9 @@ export default function TaskControl({ control, index, errors}: Props) {
                     rules={{
                         required: true,
                     }}
-                    render={({ field }: any) => {
+                    render={({ field: { ...field }, fieldState: { error, invalid, isTouched } }: any,) => {
                         return <FloatingLabelFields label='Date' value={field.value}>
-                            <input type="date" {...field} />
+                            <input className={invalid && isTouched ? "error" : ''} type="date" {...field} />
                         </FloatingLabelFields>
                     }
                     }
@@ -34,22 +33,20 @@ export default function TaskControl({ control, index, errors}: Props) {
                     control={control}
                     name={`tasks.${index}.title`}
                     rules={{
-                        required: {
-                            value: true,
-                            message: 'Title is required'
-                        },
-
+                        required: true,
                     }}
-                    render={({ field: { ref, ...field }, fieldState: { error } }) => {
-                        console.log(error);
+                    render={({ field: { ...field }, fieldState: { error, invalid, isTouched } }) => {
 
                         return <div>
                             <FloatingLabelFields label='Title' value={field.value}>
-                                <input ref={ref}
+                                {/* <div> */}
+                                <input className={invalid && isTouched ? "error" : ''}
                                     type="text" {...field} />
-                            </FloatingLabelFields>
-                            {error?.message}
+                                {/* {error && <p>Error!</p>} */}
 
+                                {/* </div> */}
+
+                            </FloatingLabelFields>
                         </div>
                     }
                     }
@@ -62,9 +59,9 @@ export default function TaskControl({ control, index, errors}: Props) {
                     rules={{
                         required: true,
                     }}
-                    render={({ field }) => {
+                    render={({ field: { ...field }, fieldState: { error, invalid, isTouched } }) => {
                         return <FloatingLabelFields label='Description' value={field.value}>
-                            <textarea rows={5} {...field}></textarea>
+                            <textarea className={invalid && isTouched ? "error" : ''} rows={5} {...field}></textarea>
                         </FloatingLabelFields>
                     }}
                 />
@@ -72,9 +69,6 @@ export default function TaskControl({ control, index, errors}: Props) {
                 <Controller
                     control={control}
                     name={`tasks.${index}.status`}
-                    rules={{
-                        required: true,
-                    }}
                     render={({ field: { onChange, value } }) => {
                         return (
                             <div className='switch-content'>
@@ -92,8 +86,13 @@ export default function TaskControl({ control, index, errors}: Props) {
                     rules={{
                         required: true,
                     }}
-                    render={({ field: { onChange, value } }) => {
-                        return <DragNdrop onChange={(e: IFile[]) => onChange(e)} files={value} />
+                    render={({ field: { onChange, value }, fieldState: { error, invalid, isTouched } }) => {
+                        return <div>
+                            <DragNdrop onChange={(e: IFile[]) => onChange(e)} files={value} />
+
+                            <p>{invalid && isTouched? 'Required':''}</p>
+                        </div>
+
                     }
                     }
                 />

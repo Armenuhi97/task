@@ -23,7 +23,9 @@
     margin-top: 15px;
     width: 100%;
 }
-
+.error{
+    border-color: red !important;
+}
 input[type="text"],
 input[type="checkbox"],
 input[type="date"],

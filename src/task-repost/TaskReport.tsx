@@ -5,7 +5,6 @@ import './TaskReport.scss';
 import { FullCalendar } from "../select-day/FullCalendar";
 import { useFieldArray, useForm } from "react-hook-form";
 import { TaskForm } from "./task-form.model";
-import ButtonsGroup from "../components/buttons-group/ButtonsGroup";
 import TaskControl from "../task-control/TaskControl";
 import TaskFormContent from "../components/task-form-content/TaskFormContent";
 import PreviewTask from "../preview-task/PreviewTask";
@@ -32,15 +31,19 @@ export default function TaskReport() {
             files: []
         }
     }, [])
-    const { control, reset, handleSubmit, getValues, setValue, watch, formState: { errors }, register } = useForm<TaskForm>({
+    const { control, reset, handleSubmit, getValues, setValue, watch, formState: { errors, isValid }, register } = useForm<TaskForm>({
         defaultValues: {
             day: null,
             tasks: [taskDefaultValue()]
         }
     });
+
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'tasks'
+        name: 'tasks',
+        // rules: {
+        //     required: true,
+        // }
     });
 
 
@@ -79,7 +82,8 @@ export default function TaskReport() {
     }, []);
 
     const onSubmit = (data: TaskForm) => {
-        console.log(data);
+
+        console.log(data, 'submit');
     };
 
     const handleBack = useCallback(() => {
@@ -91,17 +95,16 @@ export default function TaskReport() {
     }, [step]);
 
     const handleNext = useCallback(() => {
-        console.log(step);
-        console.log(Steps.length);
+        if (!isValid && step === 1) {
+            return;
+        }
 
         if (step === Steps.length) {
-            // const formValue = getValues();
-            // onSubmit(formValue);
             return;
         }
         setStep(step + 1);
         saveStep(step + 1);
-    }, [step]);
+    }, [step, isValid, errors]);
 
     const handleAdd = () => {
         append(taskDefaultValue());
@@ -145,9 +148,18 @@ export default function TaskReport() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="step-component">{stepComponent()}</div>
                 <div className="buttons">
+                    {step <= 2 &&
+                        <div className="buttons-group">
+                            <SecondaryButton isDisabled={step === 0} title='Back' handleClick={() => handleBack()} />
+                            <div className="right-buttons ml-20">
+                                {step === 1 && <SecondaryButton title='Add' handleClick={() => handleAdd()} />}
+                                <PrimaryButton type={step === 1 ? 'submit' : 'button'} className="ml-20" title='Next'
+                                    handleClick={() => handleNext()}
+                                />
+                            </div>
+                        </div>
+                    }
                     {step === 3 && <PrimaryButton className="finish-btn" title='Finish' handleClick={() => handleNext()} />}
-                    {step <= 2 && <ButtonsGroup isShowAddBtn={step === 1} step={step} handleAdd={handleAdd} handleBack={handleBack} handleNext={handleNext}></ButtonsGroup>}
-
                 </div>
             </form>
         </div>

@@ -1,11 +1,15 @@
 import './PrimaryButton.scss';
 type Props = {
     title: string
-    handleClick: () => void;
+    handleClick: (() => void);
     className: string;
-}
-export default function PrimaryButton({ title, handleClick, className }: Props) {
+    type?: 'button' | 'reset' | 'submit';
+};
+
+export default function PrimaryButton({ title, handleClick, className, type = 'button' }: Props) {
     return (
-        <button onClick={() => handleClick()} className={`${className} primary-btn btn`} type="button">{title}</button>
+        <button onClick={() => {
+            handleClick();
+        }} className={`${className} primary-btn btn`} type={type}>{title}</button>
     )
 }
