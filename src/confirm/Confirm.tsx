@@ -8,10 +8,10 @@ type Props = {
 export function Confirm({ handleConfirm, handleReject }: Props) {
     return (
         <div className='confirm'>
-            <img src="images/Ellipse.png" alt="" />
+            <img src="images/question.png" alt="" />
             <h1 className='confirm-text'>Are you sure you want to
                 create a new task?</h1>
-            <div className="buttons-group">
+            <div className="confirm-buttons">
                 <SecondaryButton title='No' handleClick={() => handleConfirm()} />
                 <PrimaryButton className="ml-20" title='Yes' handleClick={() => handleReject()} />
             </div>

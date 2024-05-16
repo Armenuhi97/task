@@ -5,14 +5,17 @@ interface IStepProps {
     steps: string[];
 }
 export default function Stepper({ currentStep, steps }: IStepProps) {
+    const checkIsFinish = (index: number):boolean => {
+        return (currentStep >= steps.length - 1 && (index === currentStep || index+1 === currentStep) );
+    }
     return (
         <div className='stepper'>
             {
                 steps.map((step: string, index: number) => {
                     return (
-                        <div className={`step ${currentStep >= index ? 'active-step' : ''}`} key={index}>
-                            <div className="step-number">
-                                {index + 1}
+                        <div className={`step ${index < currentStep && 'current-step'} ${currentStep >= index && 'active-step'}`} key={index}>
+                            <div className={`step-number ${checkIsFinish(index) && 'last-step'}`}>
+                                {checkIsFinish(index) ? <img src="/icons/Check.svg" alt="" /> : <span> {index + 1}</span>}
                             </div>
                             <div className='text'>{step}</div>
                         </div>

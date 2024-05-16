@@ -1,16 +1,18 @@
-import { ChangeHandler, Control, Controller, FieldArrayWithId } from 'react-hook-form';
+import { Control, Controller, FieldError, FieldErrors } from 'react-hook-form';
 import FloatingLabelFields from '../components/floating-label-field/FloatingLabelField';
 import './TaskControl.scss';
 import { IFile, TaskForm } from '../task-repost/task-form.model';
 import { Switch } from '../components/switch/Switch';
-import DargAndDropFiles from '../components/drag-and-drop-files/DargAndDropFiles';
 import DragNdrop from '../components/drag-and-drop-files/DargAndDropFiles';
-import { useState } from 'react';
+
 type Props = {
     index: number;
-    control: Control<TaskForm>
+    control: Control<TaskForm>;
+    errors?: FieldErrors<TaskForm>
 }
-export default function TaskControl({ control, index }: Props) {
+export default function TaskControl({ control, index, errors}: Props) {
+    console.log(errors);
+    
     return (
         <div className="task-content">
             <div className='left-content'>
@@ -32,14 +34,26 @@ export default function TaskControl({ control, index }: Props) {
                     control={control}
                     name={`tasks.${index}.title`}
                     rules={{
-                        required: true,
+                        required: {
+                            value: true,
+                            message: 'Title is required'
+                        },
+
                     }}
-                    render={({ field }) => {
-                        return <FloatingLabelFields label='Title' value={field.value}>
-                            <input type="text" {...field} />
-                        </FloatingLabelFields>
+                    render={({ field: { ref, ...field }, fieldState: { error } }) => {
+                        console.log(error);
+
+                        return <div>
+                            <FloatingLabelFields label='Title' value={field.value}>
+                                <input ref={ref}
+                                    type="text" {...field} />
+                            </FloatingLabelFields>
+                            {error?.message}
+
+                        </div>
                     }
                     }
+
                 />
 
                 <Controller
@@ -79,7 +93,7 @@ export default function TaskControl({ control, index }: Props) {
                         required: true,
                     }}
                     render={({ field: { onChange, value } }) => {
-                        return <DragNdrop onChange={(e:IFile[]) => onChange(e)} files={value} />
+                        return <DragNdrop onChange={(e: IFile[]) => onChange(e)} files={value} />
                     }
                     }
                 />

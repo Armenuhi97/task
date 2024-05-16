@@ -36,10 +36,12 @@
     position: relative;
     border-radius: 8px;
     cursor: pointer;
-
+    width: 150px;
+    margin: 0 auto;
     &.active {
         border: none !important;
         padding: 0 !important;
+        width: 100% !important;
     }
 
     .upload-info {

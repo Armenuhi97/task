@@ -2,7 +2,13 @@
     display: flex;
     align-items: center;
 }
-
+.last-step{
+    background-color: #52C41A !important;
+    img{
+        height: 25px;
+        width: 20px;
+    }
+}
 .step {
     width: 25%;
     text-align: center;
@@ -37,14 +43,20 @@
         font-size: 14px;
         line-height: 22px;
         font-family: Roboto;
-        font-weight:500;
+        font-weight: 500;
+    }
+}
+
+.current-step {
+    .text {
+        font-weight: 700;
     }
 }
 
 .active-step {
     .step-number {
-        background-color: #3DA2C2 !important;
-        color: #ffffff !important;
+        background-color: #3DA2C2 ;
+        color: #ffffff ;
         box-shadow: 0px 4px 4px 0px #0000001A;
     }
 

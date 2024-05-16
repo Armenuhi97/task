@@ -117,7 +117,7 @@ export default function TaskReport() {
                     return (
                         <div key={field.id} className="form-control">
                             <TaskFormContent isShowRemoveButton={true} removeControl={() => removeControl(index)}>
-                                <TaskControl {...{ control, index, field }} />
+                                <TaskControl {...{ control, index, field, errors }} />
                             </TaskFormContent>
                         </div>
                     )

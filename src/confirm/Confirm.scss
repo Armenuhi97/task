@@ -1,5 +1,6 @@
 .confirm {
     text-align: center;
+
     .confirm-text {
         margin-top: 34px;
         font-family: Roboto;
@@ -9,6 +10,10 @@
         text-align: center;
     }
 }
-.buttons-group{
+
+.confirm-buttons {
     margin-top: 60px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 }
