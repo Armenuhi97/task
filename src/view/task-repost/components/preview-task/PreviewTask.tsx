@@ -1,8 +1,8 @@
 import TaskFormContent from "../../../../components/task-form-content/TaskFormContent";
 import { TaskForm } from "../../task-form.model";
 import './PreviewTask.scss';
-
-export default function PreviewTask({ formValue }: { formValue: TaskForm }) {
+type Props = { formValue: TaskForm }
+export default function PreviewTask({ formValue }: Props) {
     return (
         <div>
             {formValue.tasks?.map((task, index) => {

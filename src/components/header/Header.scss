@@ -22,6 +22,9 @@
             line-height: 22px;
             text-decoration: none;
             padding: 8px 17px;
+            &:hover{
+                opacity: 0.8;
+            }
         }
 
         .active {

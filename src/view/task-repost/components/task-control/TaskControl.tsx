@@ -11,6 +11,7 @@ type Props = {
     isClickOnSubmit: boolean;
 }
 export default function TaskControl({ control, index, isClickOnSubmit }: Props) {
+    const removeExtraSpace = (s: string) => s.trim();
 
     return (
         <div className="task-content">
@@ -38,11 +39,16 @@ export default function TaskControl({ control, index, isClickOnSubmit }: Props) 
                             return !!value.trim()
                         }
                     }}
-                    render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {                        
+                    render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {
                         return <div>
                             <FloatingLabelFields<string> label='Title' value={field.value}>
                                 <input className={invalid && isTouched ? "error" : ''}
-                                    type="text" {...field} />
+                                    type="text" {...field}
+                                    onBlur={() => {
+                                        field.onBlur();
+                                        field.onChange(removeExtraSpace(field.value));
+                                    }}
+                                />
                             </FloatingLabelFields>
                         </div>
                     }
@@ -61,7 +67,12 @@ export default function TaskControl({ control, index, isClickOnSubmit }: Props) 
                     }}
                     render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {
                         return <FloatingLabelFields<string> label='Description' value={field.value}>
-                            <textarea className={invalid && isTouched ? "error" : ''} rows={5} {...field}></textarea>
+                            <textarea className={invalid && isTouched ? "error" : ''} rows={5} {...field}
+                                onBlur={() => {
+                                    field.onBlur();
+                                    field.onChange(removeExtraSpace(field.value));
+                                }}
+                            ></textarea>
                         </FloatingLabelFields>
                     }}
                 />

@@ -1,5 +1,4 @@
-import PrimaryButton from '../../../../components/primary-button/PrimaryButton';
-import SecondaryButton from '../../../../components/secondary-button/SecondaryButton';
+import Button from '../../../../components/button/Button';
 import './Confirm.scss';
 type Props = {
     handleConfirm: () => void;
@@ -12,8 +11,8 @@ export function Confirm({ handleConfirm, handleReject }: Props) {
             <h1 className='confirm-text'>Are you sure you want to
                 create a new task?</h1>
             <div className="confirm-buttons">
-                <SecondaryButton title='No' handleClick={() => handleConfirm()} />
-                <PrimaryButton className="ml-20" title='Yes' handleClick={() => handleReject()} />
+                <Button buttonType='secondary' title='No' handleClick={() =>  handleReject()} />
+                <Button buttonType='primary' className="ml-20" title='Yes' handleClick={() =>handleConfirm()} />
             </div>
         </div>
 

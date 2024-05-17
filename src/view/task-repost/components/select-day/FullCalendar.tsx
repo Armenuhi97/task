@@ -4,8 +4,10 @@ import { Calendar } from 'rsuite';
 import { Control, Controller } from "react-hook-form";
 import { TaskForm } from "../../task-form.model";
 import './FullCalendar.scss';
-
-export function FullCalendar({ control }: { control: Control<TaskForm> }) {
+type Props = {
+    control: Control<TaskForm>
+}
+export function FullCalendar({ control }: Props) {
     return (
         <div>
             <Controller

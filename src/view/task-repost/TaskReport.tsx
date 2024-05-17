@@ -9,14 +9,22 @@ import TaskControl from "./components/task-control/TaskControl";
 import TaskFormContent from "../../components/task-form-content/TaskFormContent";
 import PreviewTask from "./components/preview-task/PreviewTask";
 import CompletedTask from "../../completed-task/CompletedTask";
-import PrimaryButton from "../../components/primary-button/PrimaryButton";
+import Button from "../../components/button/Button";
 import { Confirm } from "./components/confirm/Confirm";
-import SecondaryButton from "../../components/secondary-button/SecondaryButton";
+import { MessageType } from "../../models/message.model";
+import Message from "../../components/message/Message";
 
+interface IToast {
+    message: string;
+    type: MessageType;
+}
 export default function TaskReport() {
     const [step, setStep] = useState<number>(0);
     const [isFinish, setIsFinish] = useState<boolean>(false);
     const [isClickOnSubmit, setIsClickOnSubmit] = useState<boolean>(false);
+    const [toast, setToast] = useState<IToast | null>(null);
+
+    const autoCloseDuration = 5;
 
     const taskDefaultValue = useCallback((): ITask => {
         const date = new Date();
@@ -43,7 +51,6 @@ export default function TaskReport() {
         control,
         name: 'tasks'
     });
-
 
     useEffect(() => {
         try {
@@ -73,8 +80,6 @@ export default function TaskReport() {
         })
         return () => subscription.unsubscribe();
     }, [watch, step, saveTask]);
-
-
 
     const saveStep = useCallback((currentStep: number) => {
         localStorage.setItem('step', JSON.stringify(currentStep));
@@ -128,7 +133,7 @@ export default function TaskReport() {
         }
     }, [step, fields, isClickOnSubmit, control, errors, getValues, remove]);
 
-    const handleConfirm = () => {
+    const resetOptions = () => {
         localStorage.removeItem('step');
         localStorage.removeItem('task');
         setIsFinish(false);
@@ -136,27 +141,44 @@ export default function TaskReport() {
         reset();
         setStep(0);
     }
-
+    const handleConfirm = () => {
+        showToast('success', 'Your task has been successfully created!');
+        resetOptions();
+    }
+    const handleReject = () => {
+        showToast('failed', 'Your task has deleted');
+        resetOptions();
+    }
+    const showToast = (type: MessageType, message: string) => {
+        setToast({
+            type,
+            message
+        })
+        setTimeout(() => {
+            setToast(null);
+        }, autoCloseDuration * 1000);
+    }
     return (
         <div>
+            {toast && <Message message={toast.message} type={toast.type} />}
             <Stepper currentStep={step} steps={Steps}></Stepper>
             <h1 className="title">Task Report</h1>
             <p className="sub-title">Duis tellus aenean id tellus eu ut sit magna magna. At ornare iaculis feugiat nullam morbi ut interdum. Nunc dui elit nibh urna ullamcorper tincidunt.</p>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="step-component">{isFinish ? <Confirm handleConfirm={handleConfirm} handleReject={handleConfirm} /> : stepComponent()}</div>
+                <div className="step-component">{isFinish ? <Confirm handleConfirm={handleConfirm} handleReject={handleReject} /> : stepComponent()}</div>
                 <div className="buttons">
                     {step <= 2 &&
                         <div className="buttons-group">
-                            <SecondaryButton isDisabled={step === 0} title='Back' handleClick={() => handleBack()} />
+                            <Button buttonType="secondary" isDisabled={step === 0} title='Back' handleClick={() => handleBack()} />
                             <div className="right-buttons ml-20">
-                                {step === 1 && <SecondaryButton title='Add' handleClick={() => handleAdd()} />}
-                                <PrimaryButton type={step === 1 ? 'submit' : 'button'} className="ml-20" title='Next'
+                                {step === 1 && <Button buttonType="secondary" title='Add' handleClick={() => handleAdd()} />}
+                                <Button buttonType="primary" type={step === 1 ? 'submit' : 'button'} className="ml-20" title='Next'
                                     handleClick={() => handleNext()}
                                 />
                             </div>
                         </div>
                     }
-                    {step === 3 && !isFinish && <PrimaryButton className="finish-btn" title='Finish' handleClick={() => setIsFinish(true)} />}
+                    {step === 3 && !isFinish && <Button buttonType="primary" className="finish-btn" title='Finish' handleClick={() => setIsFinish(true)} />}
                 </div>
             </form>
         </div>

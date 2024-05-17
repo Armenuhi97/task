@@ -1,11 +1,11 @@
 import { memo, useCallback } from 'react';
 import './Stepper.scss';
 
-interface IStepProps {
+interface Props {
     currentStep: number;
     steps: string[];
 }
-export default memo(function Stepper({ currentStep, steps }: IStepProps) {
+export default memo(function Stepper({ currentStep, steps }: Props) {
     const checkIsFinish = useCallback((index: number): boolean => {
         return currentStep === steps.length - 1 && currentStep === index;
     }, [steps, currentStep]);
