@@ -1,4 +1,5 @@
 import './Switch.scss';
+
 type Prop = {
     label: string;
     value:boolean;

@@ -34,11 +34,13 @@ export default function TaskControl({ control, index, isClickOnSubmit }: Props) 
                     name={`tasks.${index}.title`}
                     rules={{
                         required: true,
+                        validate: (value) => {
+                            return !!value.trim()
+                        }
                     }}
-                    render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {
-
+                    render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {                        
                         return <div>
-                            <FloatingLabelFields<string>  label='Title' value={field.value}>
+                            <FloatingLabelFields<string> label='Title' value={field.value}>
                                 <input className={invalid && isTouched ? "error" : ''}
                                     type="text" {...field} />
                             </FloatingLabelFields>
@@ -53,9 +55,12 @@ export default function TaskControl({ control, index, isClickOnSubmit }: Props) 
                     name={`tasks.${index}.description`}
                     rules={{
                         required: true,
+                        validate: (value) => {
+                            return !!value.trim()
+                        }
                     }}
                     render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {
-                        return <FloatingLabelFields<string>  label='Description' value={field.value}>
+                        return <FloatingLabelFields<string> label='Description' value={field.value}>
                             <textarea className={invalid && isTouched ? "error" : ''} rows={5} {...field}></textarea>
                         </FloatingLabelFields>
                     }}

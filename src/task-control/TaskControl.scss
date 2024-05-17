@@ -6,12 +6,11 @@
 
 .left-content {
     padding-right: 25px;
+    border-right: 1px solid #c4c4c4;
 }
 
 .right-content {
     padding-left: 25px;
-    border-left: 1px solid #c4c4c4;
-
 }
 
 .left-content,
@@ -23,8 +22,16 @@
     margin-top: 15px;
     width: 100%;
 }
-.error{
+.error {
     border-color: red !important;
+}
+.invalid-field {
+    label {
+        color: red !important;
+    }
+    input {
+        border-color: red !important;
+    }
 }
 input[type="text"],
 input[type="checkbox"],

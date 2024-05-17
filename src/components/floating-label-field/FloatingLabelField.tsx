@@ -3,13 +3,13 @@ type Props<T> = {
     children: string | JSX.Element | JSX.Element[];
     label: string;
     value: T;
-    isShowLabel?: boolean
+    isShowLabel?: boolean;
 }
 export default function FloatingLabelFields<T>({ isShowLabel = true, children, label, value }: Props<T>) {
     return (
         <div className="input-container">
             {children}
-            {isShowLabel && <label className={value && 'filled'} >
+            {isShowLabel && <label className={(typeof value === 'string' ? value.trim() : value) && 'filled'} >
                 {label}
             </label>}
         </div>

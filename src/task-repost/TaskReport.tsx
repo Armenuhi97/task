@@ -92,7 +92,7 @@ export default function TaskReport() {
         saveStep(step - 1);
     }, [step]);
 
-    const handleNext = useCallback(() => {
+    const handleNext = useCallback(() => {        
         if (!isValid && step === 1) {
             setIsClickOnSubmit(true);
             return;
