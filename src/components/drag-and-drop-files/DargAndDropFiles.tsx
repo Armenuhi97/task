@@ -8,7 +8,7 @@ type Props = {
     isTouched: boolean;
 }
 export default function DragAndDropFiles({ files, onChange, invalid, isTouched }: Props) {
-    const handleFileChange = async (event: any) => {
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = (event.target as HTMLInputElement).files;
         if (selectedFiles && selectedFiles.length > 0) {
             const newFiles = Array.from(selectedFiles);
@@ -36,12 +36,12 @@ export default function DragAndDropFiles({ files, onChange, invalid, isTouched }
             };
         });
     };
-    const handleDrop = async (event: any) => {
+    const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         const droppedFiles = event?.dataTransfer?.files;
         if (droppedFiles && droppedFiles.length > 0) {
             const newFiles = Array.from(droppedFiles);
-            const items = await Promise.all(newFiles.map((el: any) => {
+            const items = await Promise.all(newFiles.map((el: File) => {
                 return formatFilesArray(el);
             }).filter((el) => el));
             onChange([...(files as IFile[]), ...(items as IFile[])]);

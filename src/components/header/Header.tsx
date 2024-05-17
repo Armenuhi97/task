@@ -1,4 +1,4 @@
-import { MENU } from '../utils/menu';
+import { MENU } from '../../utils/menu';
 import './Header.scss';
 import { NavLink } from 'react-router-dom';
 

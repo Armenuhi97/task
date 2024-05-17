@@ -1,7 +1,7 @@
 import './Switch.scss';
 type Prop = {
     label: string;
-    value:string | undefined;
+    value:boolean;
     onChange:()=>void
 }
 export function Switch({ value, label, onChange }: Prop) {    

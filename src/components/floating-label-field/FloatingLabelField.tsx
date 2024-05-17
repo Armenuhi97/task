@@ -1,11 +1,11 @@
 import './FloatingLabelField.scss';
-type Props = {
+type Props<T> = {
     children: string | JSX.Element | JSX.Element[];
     label: string;
-    value: any;
+    value: T;
     isShowLabel?: boolean
 }
-export default function FloatingLabelFields({ isShowLabel = true, children, label, value }: Props) {
+export default function FloatingLabelFields<T>({ isShowLabel = true, children, label, value }: Props<T>) {
     return (
         <div className="input-container">
             {children}

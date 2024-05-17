@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.scss';
-import { MENU } from '../utils/menu';
+import { MENU } from '../../utils/menu';
 import { NavLink } from 'react-router-dom';
 export default function Footer() {
     return (

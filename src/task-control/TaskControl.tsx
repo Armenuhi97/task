@@ -21,8 +21,8 @@ export default function TaskControl({ control, index, isClickOnSubmit }: Props) 
                     rules={{
                         required: true,
                     }}
-                    render={({ field: { ...field }, fieldState: { invalid, isTouched } }: any,) => {
-                        return <FloatingLabelFields isShowLabel={field.value} label='Date' value={field.value}>
+                    render={({ field: { ...field }, fieldState: { invalid, isTouched } }: any) => {
+                        return <FloatingLabelFields<string> isShowLabel={field.value} label='Date' value={field.value}>
                             <input className={invalid && isTouched ? "error" : ''} type="date" {...field} />
                         </FloatingLabelFields>
                     }
@@ -38,7 +38,7 @@ export default function TaskControl({ control, index, isClickOnSubmit }: Props) 
                     render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {
 
                         return <div>
-                            <FloatingLabelFields label='Title' value={field.value}>
+                            <FloatingLabelFields<string>  label='Title' value={field.value}>
                                 <input className={invalid && isTouched ? "error" : ''}
                                     type="text" {...field} />
                             </FloatingLabelFields>
@@ -55,7 +55,7 @@ export default function TaskControl({ control, index, isClickOnSubmit }: Props) 
                         required: true,
                     }}
                     render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {
-                        return <FloatingLabelFields label='Description' value={field.value}>
+                        return <FloatingLabelFields<string>  label='Description' value={field.value}>
                             <textarea className={invalid && isTouched ? "error" : ''} rows={5} {...field}></textarea>
                         </FloatingLabelFields>
                     }}

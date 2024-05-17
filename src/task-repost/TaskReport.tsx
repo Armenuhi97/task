@@ -4,7 +4,7 @@ import { Steps } from "./utils";
 import './TaskReport.scss';
 import { FullCalendar } from "../select-day/FullCalendar";
 import { useFieldArray, useForm } from "react-hook-form";
-import { TaskForm } from "./task-form.model";
+import { ITask, TaskForm } from "./task-form.model";
 import TaskControl from "../task-control/TaskControl";
 import TaskFormContent from "../components/task-form-content/TaskFormContent";
 import PreviewTask from "../preview-task/PreviewTask";
@@ -19,7 +19,7 @@ export default function TaskReport() {
     const [isClickOnSubmit, setIsClickOnSubmit] = useState<boolean>(false);
 
 
-    const taskDefaultValue = useCallback(() => {
+    const taskDefaultValue = useCallback((): ITask => {
         const date = new Date();
         var d = date.getDate();
         var m = date.getMonth() + 1; //Month from 0 to 11
@@ -29,7 +29,7 @@ export default function TaskReport() {
             date: `${y}-${m <= 9 ? '0' + m : m}-${(d <= 9 ? '0' + d : d)}`,
             title: '',
             description: '',
-            status: '',
+            status: false,
             files: []
         }
     }, [])
@@ -42,10 +42,7 @@ export default function TaskReport() {
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'tasks',
-        // rules: {
-        //     required: true,
-        // }
+        name: 'tasks'
     });
 
 
@@ -69,7 +66,7 @@ export default function TaskReport() {
     }, []);
 
     useEffect(() => {
-        const subscription = watch((formValue: any) => {
+        const subscription = watch((formValue:any) => {
             saveTask(formValue);
         })
         return () => subscription.unsubscribe();
@@ -84,7 +81,6 @@ export default function TaskReport() {
     }, []);
 
     const onSubmit = (data: TaskForm) => {
-
         console.log(data, 'submit');
     };
 
