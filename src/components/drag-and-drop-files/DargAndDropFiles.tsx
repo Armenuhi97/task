@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
 import "./DargAndDropFiles.scss";
-import { ChangeHandler } from "react-hook-form";
 import { IFile } from "../../task-repost/task-form.model";
 
 type Props = {
     files: IFile[] | undefined;
-    onChange: (e: IFile[]) => void
+    onChange: (e: IFile[]) => void;
+    invalid: boolean;
+    isTouched: boolean;
 }
-export default function DragNdrop({ files, onChange }: Props) {
+export default function DragAndDropFiles({ files, onChange, invalid, isTouched }: Props) {
     const handleFileChange = async (event: any) => {
         const selectedFiles = (event.target as HTMLInputElement).files;
         if (selectedFiles && selectedFiles.length > 0) {
             const newFiles = Array.from(selectedFiles);
             const items = await Promise.all(newFiles.map((el: File) => {
                 return formatFilesArray(el);
-            }));
-            onChange([...(files as IFile[]), ...items]);
+            }).filter((el) => el));
+
+            onChange([...(files as IFile[]), ...(items as IFile[])]);
         }
     };
 
@@ -42,20 +43,28 @@ export default function DragNdrop({ files, onChange }: Props) {
             const newFiles = Array.from(droppedFiles);
             const items = await Promise.all(newFiles.map((el: any) => {
                 return formatFilesArray(el);
-            }));
-            onChange([...(files as IFile[]), ...items]);
+            }).filter((el) => el));
+            onChange([...(files as IFile[]), ...(items as IFile[])]);
         }
     };
-    const formatFilesArray = (el: File) => {
-        if (el.type.indexOf('image') > -1) {
-            return convertToBase64(el as File)
+    const formatFilesArray = (file: File): IFile | Promise<IFile> | void => {
+        if (file.type.indexOf('image') > -1) {
+            return convertToBase64(file as File)
         } else {
-            return { image: '/images/pdf.png', name: el.name }
+            const isAllowFormat = checkFileRegExp('pdf', file);
+            if (!isAllowFormat) {
+                return;
+            }
+            return { image: '/images/pdf.png', name: file.name };
         }
     }
     const handleRemoveFile = (index: number) => {
         onChange((files as IFile[]).filter((_: IFile, i: number) => i !== index));
     };
+    function checkFileRegExp(fileType: string, file: File) {
+        return new RegExp(`.+\.${fileType}$`).test(file.type);
+    }
+
     return (
         <section className='select-file'>
             {files && files.length > 0 && (
@@ -64,52 +73,45 @@ export default function DragNdrop({ files, onChange }: Props) {
                 </div>
             )}
             <div
-                className={`document-uploader ${files && files.length > 0 ? "upload-box active" : "upload-box"
-                    }`}
+                className={`${invalid && isTouched ? 'error' : ''} document-uploader upload-box ${files && files.length > 0 && "active"}`}
                 onDrop={handleDrop}
                 onDragOver={(event) => event.preventDefault()}
             >
                 <>
                     <div className={`${files && files.length ? 'd-none' : ''}`}>
-                        <div> <img src="/icons/folder.svg" alt="" /></div>
-                        <p className='upload-text'>Drag & drop a file to upload</p>
+                        <label htmlFor="browse" >
+                            <div> <img src="/icons/folder.svg" alt="" /></div>
+                            <p className='upload-text'>Drag & drop a file to upload</p>
+                        </label>
                     </div>
                     <input
                         type="file"
                         hidden
                         id="browse"
                         onChange={handleFileChange}
-                        accept=".pdf,.docx,.xlsx"
+                        accept=".pdf,image/*"
                         multiple
                     />
-                    {/* <label htmlFor="browse" className="browse-btn">
-                        Browse files
-                    </label> */}
                 </>
 
                 {files && files.length > 0 && (
                     <div className="file-list">
                         <div className="file-list__container">
-                            {files.map((file: any, index: number) => (
+                            {files.map((file: IFile, index: number) => (
                                 <div className="file-item" key={index}>
                                     <div className="file-info">
                                         <img src={file.image} alt="" />
                                         <p className="file-name">{file.name}</p>
-                                        <p>{file.type}</p>
                                     </div>
                                     <div className="file-actions">
-                                        <span onClick={() => handleRemoveFile(index)}>x</span>
+                                        <img onClick={() => handleRemoveFile(index)} src="/icons/Minus.svg" alt="" />
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
                 )}
-
-
             </div>
         </section>
     );
 };
-
-// export default DragNdrop;

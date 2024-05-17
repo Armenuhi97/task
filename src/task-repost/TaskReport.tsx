@@ -15,7 +15,9 @@ import SecondaryButton from "../components/secondary-button/SecondaryButton";
 
 export default function TaskReport() {
     const [step, setStep] = useState<number>(0);
-    // const [isFinish, setIsFinish] = useState<boolean>(false);
+    const [isFinish, setIsFinish] = useState<boolean>(false);
+    const [isClickOnSubmit, setIsClickOnSubmit] = useState<boolean>(false);
+
 
     const taskDefaultValue = useCallback(() => {
         const date = new Date();
@@ -31,7 +33,7 @@ export default function TaskReport() {
             files: []
         }
     }, [])
-    const { control, reset, handleSubmit, getValues, setValue, watch, formState: { errors, isValid }, register } = useForm<TaskForm>({
+    const { control, reset, handleSubmit, getValues, setValue, watch, formState: { errors, isValid, }, register } = useForm<TaskForm>({
         defaultValues: {
             day: null,
             tasks: [taskDefaultValue()]
@@ -96,15 +98,16 @@ export default function TaskReport() {
 
     const handleNext = useCallback(() => {
         if (!isValid && step === 1) {
+            setIsClickOnSubmit(true);
             return;
         }
 
-        if (step === Steps.length) {
+        if (step === Steps.length - 1) {
             return;
         }
         setStep(step + 1);
         saveStep(step + 1);
-    }, [step, isValid, errors]);
+    }, [step, isValid]);
 
     const handleAdd = () => {
         append(taskDefaultValue());
@@ -120,7 +123,7 @@ export default function TaskReport() {
                     return (
                         <div key={field.id} className="form-control">
                             <TaskFormContent isShowRemoveButton={true} removeControl={() => removeControl(index)}>
-                                <TaskControl {...{ control, index, field, errors }} />
+                                <TaskControl isClickOnSubmit={isClickOnSubmit} {...{ control, index, field, errors }} />
                             </TaskFormContent>
                         </div>
                     )
@@ -128,14 +131,13 @@ export default function TaskReport() {
             );
             case 2: return <PreviewTask formValue={getValues()} />
             case 3: return <CompletedTask />
-            case 4: return <Confirm handleConfirm={handleConfirm} handleReject={handleConfirm} />
-
         }
-    }, [step, fields]);
+    }, [step, fields, isClickOnSubmit]);
 
     const handleConfirm = () => {
         localStorage.removeItem('step');
         localStorage.removeItem('task');
+        setIsFinish(false);
         reset();
         setStep(0);
     }
@@ -146,7 +148,7 @@ export default function TaskReport() {
             <h1 className="title">Task Report</h1>
             <p className="sub-title">Duis tellus aenean id tellus eu ut sit magna magna. At ornare iaculis feugiat nullam morbi ut interdum. Nunc dui elit nibh urna ullamcorper tincidunt.</p>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="step-component">{stepComponent()}</div>
+                <div className="step-component">{isFinish ? <Confirm handleConfirm={handleConfirm} handleReject={handleConfirm} /> : stepComponent()}</div>
                 <div className="buttons">
                     {step <= 2 &&
                         <div className="buttons-group">
@@ -159,7 +161,7 @@ export default function TaskReport() {
                             </div>
                         </div>
                     }
-                    {step === 3 && <PrimaryButton className="finish-btn" title='Finish' handleClick={() => handleNext()} />}
+                    {step === 3 && <PrimaryButton className="finish-btn" title='Finish' handleClick={() => setIsFinish(true)} />}
                 </div>
             </form>
         </div>

@@ -3,14 +3,14 @@ import FloatingLabelFields from '../components/floating-label-field/FloatingLabe
 import './TaskControl.scss';
 import { IFile, TaskForm } from '../task-repost/task-form.model';
 import { Switch } from '../components/switch/Switch';
-import DragNdrop from '../components/drag-and-drop-files/DargAndDropFiles';
+import DragAndDropFiles from '../components/drag-and-drop-files/DargAndDropFiles';
 
 type Props = {
     index: number;
     control: Control<TaskForm>;
-    errors?: FieldErrors;
+    isClickOnSubmit: boolean;
 }
-export default function TaskControl({ control, index, errors }: Props) {
+export default function TaskControl({ control, index, isClickOnSubmit }: Props) {
 
     return (
         <div className="task-content">
@@ -21,8 +21,8 @@ export default function TaskControl({ control, index, errors }: Props) {
                     rules={{
                         required: true,
                     }}
-                    render={({ field: { ...field }, fieldState: { error, invalid, isTouched } }: any,) => {
-                        return <FloatingLabelFields label='Date' value={field.value}>
+                    render={({ field: { ...field }, fieldState: { invalid, isTouched } }: any,) => {
+                        return <FloatingLabelFields isShowLabel={field.value} label='Date' value={field.value}>
                             <input className={invalid && isTouched ? "error" : ''} type="date" {...field} />
                         </FloatingLabelFields>
                     }
@@ -35,17 +35,12 @@ export default function TaskControl({ control, index, errors }: Props) {
                     rules={{
                         required: true,
                     }}
-                    render={({ field: { ...field }, fieldState: { error, invalid, isTouched } }) => {
+                    render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {
 
                         return <div>
                             <FloatingLabelFields label='Title' value={field.value}>
-                                {/* <div> */}
                                 <input className={invalid && isTouched ? "error" : ''}
                                     type="text" {...field} />
-                                {/* {error && <p>Error!</p>} */}
-
-                                {/* </div> */}
-
                             </FloatingLabelFields>
                         </div>
                     }
@@ -59,7 +54,7 @@ export default function TaskControl({ control, index, errors }: Props) {
                     rules={{
                         required: true,
                     }}
-                    render={({ field: { ...field }, fieldState: { error, invalid, isTouched } }) => {
+                    render={({ field: { ...field }, fieldState: { invalid, isTouched } }) => {
                         return <FloatingLabelFields label='Description' value={field.value}>
                             <textarea className={invalid && isTouched ? "error" : ''} rows={5} {...field}></textarea>
                         </FloatingLabelFields>
@@ -86,17 +81,13 @@ export default function TaskControl({ control, index, errors }: Props) {
                     rules={{
                         required: true,
                     }}
-                    render={({ field: { onChange, value }, fieldState: { error, invalid, isTouched } }) => {
+                    render={({ field: { onChange, value }, fieldState: { invalid } }) => {
                         return <div>
-                            <DragNdrop onChange={(e: IFile[]) => onChange(e)} files={value} />
-
-                            <p>{invalid && isTouched? 'Required':''}</p>
+                            <DragAndDropFiles invalid={invalid} isTouched={isClickOnSubmit} onChange={(e: IFile[]) => onChange(e)} files={value} />
                         </div>
-
                     }
                     }
                 />
-                {/* <DargAndDropFiles /> */}
                 <img className='upload-image' src="/images/upload-photo.png" alt="" />
             </div>
 

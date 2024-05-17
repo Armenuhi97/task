@@ -121,19 +121,9 @@
             cursor: pointer;
             position: absolute;
             top: 0;
-            right: 10px;
+            right: 0;
             font-size: 20px;
-
-            svg {
-                font-size: 18px;
-                color: #888;
-            }
-
-            &:hover {
-                svg {
-                    color: #d44;
-                }
-            }
+            background: #ffffff;      
         }
     }
 

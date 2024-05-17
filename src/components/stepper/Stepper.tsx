@@ -6,7 +6,7 @@ interface IStepProps {
 }
 export default function Stepper({ currentStep, steps }: IStepProps) {
     const checkIsFinish = (index: number): boolean => {
-        return ((currentStep === steps.length - 1 && currentStep === index) || (currentStep > steps.length - 1 && currentStep === index + 1));
+        return currentStep === steps.length - 1 && currentStep === index;
     }
     return (
         <div className='stepper'>
