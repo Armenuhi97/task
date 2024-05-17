@@ -1,5 +1,5 @@
 import "./DargAndDropFiles.scss";
-import { IFile } from "../../task-repost/task-form.model";
+import { IFile } from "../../view/task-repost/task-form.model";
 
 type Props = {
     files: IFile[] | undefined;
@@ -23,9 +23,7 @@ export default function DragAndDropFiles({ files, onChange, invalid, isTouched }
     const convertToBase64 = (file: File): Promise<IFile> => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
-            if (!file) {
-                console.log("no image");
-            } else {
+            if (file) {
                 fileReader.readAsDataURL(file);
                 fileReader.onload = () => {
                     resolve({ image: fileReader.result as string, name: file.name });
@@ -62,7 +60,7 @@ export default function DragAndDropFiles({ files, onChange, invalid, isTouched }
         onChange((files as IFile[]).filter((_: IFile, i: number) => i !== index));
     };
     function checkFileRegExp(fileType: string, file: File) {
-        return new RegExp(`.+\.${fileType}$`).test(file.type);
+        return new RegExp(`.+${fileType}$`).test(file.type);
     }
 
     return (

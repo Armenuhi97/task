@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Layout from './layout/Layout';
-import TaskReport from './task-repost/TaskReport';
-import NoPage from './no-page/NoPage';
+import Layout from './view/layout/Layout';
+import TaskReport from './view/task-repost/TaskReport';
+import NoPage from './view/no-page/NoPage';
 
 function App() {
   return (

@@ -2,7 +2,7 @@ import React from 'react'
 import 'rsuite/dist/rsuite.min.css';
 import { Calendar } from 'rsuite';
 import { Control, Controller } from "react-hook-form";
-import { TaskForm } from "../task-repost/task-form.model";
+import { TaskForm } from "../../task-form.model";
 import './FullCalendar.scss';
 
 export function FullCalendar({ control }: { control: Control<TaskForm> }) {

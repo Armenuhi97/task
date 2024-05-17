@@ -9,7 +9,7 @@ export default memo(function Stepper({ currentStep, steps }: IStepProps) {
     const checkIsFinish = useCallback((index: number): boolean => {
         return currentStep === steps.length - 1 && currentStep === index;
     }, [steps, currentStep]);
-
+        
     return (
         <div className='stepper'>
             {

@@ -1,9 +1,9 @@
-import { Control, Controller, FieldError, FieldErrors } from 'react-hook-form';
-import FloatingLabelFields from '../components/floating-label-field/FloatingLabelField';
+import { Control, Controller } from 'react-hook-form';
+import FloatingLabelFields from '../../../../components/floating-label-field/FloatingLabelField';
 import './TaskControl.scss';
-import { IFile, TaskForm } from '../task-repost/task-form.model';
-import { Switch } from '../components/switch/Switch';
-import DragAndDropFiles from '../components/drag-and-drop-files/DargAndDropFiles';
+import { IFile, TaskForm } from '../../task-form.model';
+import { Switch } from '../../../../components/switch/Switch';
+import DragAndDropFiles from '../../../../components/drag-and-drop-files/DargAndDropFiles';
 
 type Props = {
     index: number;

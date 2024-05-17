@@ -1,28 +1,27 @@
-import Stepper from "../components/stepper/Stepper";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import Stepper from "../../components/stepper/Stepper";
+import { useCallback, useEffect, useState } from "react";
 import { Steps } from "./utils";
 import './TaskReport.scss';
-import { FullCalendar } from "../select-day/FullCalendar";
+import { FullCalendar } from "./components/select-day/FullCalendar";
 import { useFieldArray, useForm } from "react-hook-form";
 import { ITask, TaskForm } from "./task-form.model";
-import TaskControl from "../task-control/TaskControl";
-import TaskFormContent from "../components/task-form-content/TaskFormContent";
-import PreviewTask from "../preview-task/PreviewTask";
-import CompletedTask from "../completed-task/CompletedTask";
-import PrimaryButton from "../components/primary-button/PrimaryButton";
-import { Confirm } from "../confirm/Confirm";
-import SecondaryButton from "../components/secondary-button/SecondaryButton";
+import TaskControl from "./components/task-control/TaskControl";
+import TaskFormContent from "../../components/task-form-content/TaskFormContent";
+import PreviewTask from "./components/preview-task/PreviewTask";
+import CompletedTask from "../../completed-task/CompletedTask";
+import PrimaryButton from "../../components/primary-button/PrimaryButton";
+import { Confirm } from "./components/confirm/Confirm";
+import SecondaryButton from "../../components/secondary-button/SecondaryButton";
 
 export default function TaskReport() {
     const [step, setStep] = useState<number>(0);
     const [isFinish, setIsFinish] = useState<boolean>(false);
     const [isClickOnSubmit, setIsClickOnSubmit] = useState<boolean>(false);
 
-
     const taskDefaultValue = useCallback((): ITask => {
         const date = new Date();
         var d = date.getDate();
-        var m = date.getMonth() + 1; //Month from 0 to 11
+        var m = date.getMonth() + 1;
         var y = date.getFullYear();
 
         return {
@@ -33,7 +32,7 @@ export default function TaskReport() {
             files: []
         }
     }, [])
-    const { control, reset, handleSubmit, getValues, setValue, watch, formState: { errors, isValid, }, register } = useForm<TaskForm>({
+    const { control, reset, handleSubmit, getValues, setValue, watch, formState: { errors, isValid } } = useForm<TaskForm>({
         defaultValues: {
             day: null,
             tasks: [taskDefaultValue()]
@@ -55,7 +54,6 @@ export default function TaskReport() {
                 if (storageTask.tasks) {
                     setValue('tasks', storageTask.tasks);
                 }
-
             }
             const savedStep = localStorage.getItem('step');
             if (savedStep) {
@@ -63,25 +61,27 @@ export default function TaskReport() {
             }
         }
         catch { }
-    }, []);
-
-    useEffect(() => {
-        const subscription = watch((formValue:any) => {
-            saveTask(formValue);
-        })
-        return () => subscription.unsubscribe();
-    }, [watch, step]);
+    }, [setValue]);
 
     const saveTask = useCallback((formValue: TaskForm) => {
         localStorage.setItem('task', JSON.stringify(formValue));
     }, []);
+
+    useEffect(() => {
+        const subscription = watch((formValue: any) => {
+            saveTask(formValue);
+        })
+        return () => subscription.unsubscribe();
+    }, [watch, step, saveTask]);
+
+
 
     const saveStep = useCallback((currentStep: number) => {
         localStorage.setItem('step', JSON.stringify(currentStep));
     }, []);
 
     const onSubmit = (data: TaskForm) => {
-        console.log(data, 'submit');
+        // console.log(data, 'submit');
     };
 
     const handleBack = useCallback(() => {
@@ -90,9 +90,9 @@ export default function TaskReport() {
         }
         setStep(step - 1);
         saveStep(step - 1);
-    }, [step]);
+    }, [step, saveStep]);
 
-    const handleNext = useCallback(() => {        
+    const handleNext = useCallback(() => {
         if (!isValid && step === 1) {
             setIsClickOnSubmit(true);
             return;
@@ -103,14 +103,12 @@ export default function TaskReport() {
         }
         setStep(step + 1);
         saveStep(step + 1);
-    }, [step, isValid]);
+    }, [step, isValid, saveStep]);
 
-    const handleAdd = () => {
+    const handleAdd = useCallback(() => {
         append(taskDefaultValue());
-    }
-    const removeControl = (index: number) => {
-        remove(index);
-    }
+    }, [append, taskDefaultValue]);
+
     const stepComponent = useCallback(() => {
         switch (step) {
             case 0: return <FullCalendar control={control} />;
@@ -118,7 +116,7 @@ export default function TaskReport() {
                 fields.map((field, index) => {
                     return (
                         <div key={field.id} className="form-control">
-                            <TaskFormContent isShowRemoveButton={true} removeControl={() => removeControl(index)}>
+                            <TaskFormContent isShowRemoveButton={fields.length !== 1} removeControl={() => remove(index)}>
                                 <TaskControl isClickOnSubmit={isClickOnSubmit} {...{ control, index, field, errors }} />
                             </TaskFormContent>
                         </div>
@@ -128,12 +126,13 @@ export default function TaskReport() {
             case 2: return <PreviewTask formValue={getValues()} />
             case 3: return <CompletedTask />
         }
-    }, [step, fields, isClickOnSubmit]);
+    }, [step, fields, isClickOnSubmit, control, errors, getValues, remove]);
 
     const handleConfirm = () => {
         localStorage.removeItem('step');
         localStorage.removeItem('task');
         setIsFinish(false);
+        setIsClickOnSubmit(false);
         reset();
         setStep(0);
     }
@@ -157,7 +156,7 @@ export default function TaskReport() {
                             </div>
                         </div>
                     }
-                    {step === 3 && <PrimaryButton className="finish-btn" title='Finish' handleClick={() => setIsFinish(true)} />}
+                    {step === 3 && !isFinish && <PrimaryButton className="finish-btn" title='Finish' handleClick={() => setIsFinish(true)} />}
                 </div>
             </form>
         </div>

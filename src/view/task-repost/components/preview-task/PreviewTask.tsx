@@ -1,5 +1,5 @@
-import TaskFormContent from "../components/task-form-content/TaskFormContent";
-import { TaskForm } from "../task-repost/task-form.model";
+import TaskFormContent from "../../../../components/task-form-content/TaskFormContent";
+import { TaskForm } from "../../task-form.model";
 import './PreviewTask.scss';
 
 export default function PreviewTask({ formValue }: { formValue: TaskForm }) {

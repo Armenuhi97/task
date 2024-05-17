@@ -1,5 +1,5 @@
-import PrimaryButton from '../components/primary-button/PrimaryButton';
-import SecondaryButton from '../components/secondary-button/SecondaryButton';
+import PrimaryButton from '../../../../components/primary-button/PrimaryButton';
+import SecondaryButton from '../../../../components/secondary-button/SecondaryButton';
 import './Confirm.scss';
 type Props = {
     handleConfirm: () => void;
