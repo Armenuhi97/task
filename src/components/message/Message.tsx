@@ -7,9 +7,7 @@ type Props = {
     message: string;
     type: MessageType;
 }
-export default function Message({ message, type }: Props) {
-    console.log(type);
-    
+export default function Message({ message, type }: Props) {    
     const toastrIconsList = {
         success: <FaCheckCircle />,
         failed: <IoCloseCircle />
