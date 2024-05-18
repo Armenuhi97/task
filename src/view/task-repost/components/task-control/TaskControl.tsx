@@ -99,7 +99,7 @@ export default function TaskControl({ control, index, isClickOnSubmit }: Props) 
                     }}
                     render={({ field: { onChange, value }, fieldState: { invalid } }) => {
                         return <div>
-                            <DragAndDropFiles invalid={invalid} isTouched={isClickOnSubmit} onChange={(e: IFile[]) => onChange(e)} files={value} />
+                            <DragAndDropFiles invalid={invalid} index={index} isTouched={isClickOnSubmit} onChange={(e: IFile[]) => onChange(e)} files={value} />
                         </div>
                     }
                     }

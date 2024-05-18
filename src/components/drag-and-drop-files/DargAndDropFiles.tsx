@@ -6,8 +6,9 @@ type Props = {
     onChange: (e: IFile[]) => void;
     invalid: boolean;
     isTouched: boolean;
+    index:number;
 }
-export default function DragAndDropFiles({ files, onChange, invalid, isTouched }: Props) {
+export default function DragAndDropFiles({ files, onChange, invalid, isTouched, index }: Props) {
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = (event.target as HTMLInputElement).files;
         if (selectedFiles && selectedFiles.length > 0) {
@@ -77,7 +78,7 @@ export default function DragAndDropFiles({ files, onChange, invalid, isTouched }
             >
                 <>
                     <div className={`${files && files.length ? 'd-none' : ''}`}>
-                        <label htmlFor="browse" >
+                        <label htmlFor={`browse-${index}`} >
                             <div> <img src="/icons/folder.svg" alt="" /></div>
                             <p className='upload-text'>Drag & drop a file to upload</p>
                         </label>
@@ -85,7 +86,7 @@ export default function DragAndDropFiles({ files, onChange, invalid, isTouched }
                     <input
                         type="file"
                         hidden
-                        id="browse"
+                        id={`browse-${index}`} 
                         onChange={handleFileChange}
                         accept=".pdf,image/*"
                         multiple
